@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Footer from "../../Component/Footer/Footer";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function Login() {
   return (
     <div className="bg-amber-50 min-h-screen flex flex-col items-center px-4">
       <h1 className="text-2xl sm:text-3xl p-4 text-center">
-        Welcome to our WebPage
+        Welcome Poudel House
       </h1>
 
       <div className="flex justify-center items-center flex-1 w-full">
@@ -86,6 +87,7 @@ export default function Login() {
           </h3>
         </form>
       </div>
+      <Footer/>
     </div>
   );
 }

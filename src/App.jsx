@@ -6,6 +6,8 @@ import Login from './Pages/SignUpPages/Login'
 import Forgotpass from './Pages/SignUpPages/Forgotpass'
 import Home from './Pages/HomePage/Home'
 import { ThemeContext } from './Component/useContext/Toggle'
+import AboutUs from './Component/Footer/AboutUs'
+import Contact from './Component/Footer/Contact'
 
 
 export default function App() {
@@ -13,6 +15,9 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>
+        <Route path='/about' element={<AboutUs/>}/>
+        <Route path='/contact' element={<Contact/>}/>
+
         <Route path='/landing' element={<Landing/>} >
         <Route index element={<Login/>}/>
         <Route path='signup' element={<SignUp/>}/>

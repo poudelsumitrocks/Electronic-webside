@@ -1,44 +1,49 @@
-import React, { useContext } from "react";
-import { FaSearch, FaUser } from "react-icons/fa";
+import React, { useContext, useState } from "react";
+import { FaSearch, FaUser, FaBars } from "react-icons/fa";
 import { LuChevronDown } from "react-icons/lu";
 import { IoCartOutline, IoMoonOutline } from "react-icons/io5";
 import { GoSun } from "react-icons/go";
 import { ThemeContext } from "../useContext/Toggle";
 import { useNavigate } from "react-router";
 
-
-
 export default function Navbar() {
   const { isDark, handleToggle } = useContext(ThemeContext);
-  const navigate=useNavigate()
-  const handleAccount=()=>{
-    navigate("/landing")
-  }
+  const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleAccount = () => {
+    navigate("/landing");
+    setMobileMenuOpen(false);
+  };
 
   return (
-    <div className="fixed w-full top-0 bg-blue-700 h-20 text-white flex items-center px-4 sm:px-6 md:px-6">
-  
-      <div className="flex items-center flex-shrink-0">
-        <h1 className="text-white font-bold text-xl sm:text-xl md:text-2xl lg:text-3xl">
-          Poudel Electrical House
+    <div className="fixed w-full top-0 left-0 bg-blue-700 h-20 text-white flex items-center px-4 sm:px-6 md:px-8 z-50 shadow-md">
+      {/* Logo */}
+      <div className="flex-shrink-0">
+        <h1 className="text-white font-bold text-xl sm:text-2xl md:text-3xl">
+          <span className="hidden sm:inline">Poudel Electrical House</span>
+          <span className="sm:hidden">Poudel Electical House</span>
         </h1>
       </div>
 
-
-      <div className="flex flex-1 justify-center mx-2 sm:mx-4 md:mx-8 ">
+      {/* Desktop Search */}
+      <div className="hidden sm:flex flex-1 mx-4">
         <input
           type="text"
-          placeholder="Search for your product here"
-          className="h-10 w-full max-w-xs sm:max-w-md md:max-w-lg  bg-white rounded-xl text-black/70 px-4 outline-none"
+          placeholder="Search products..."
+          className="w-full px-4 py-2 rounded-l-md border-t border-b border-l border-gray-300 text-black focus:outline-none"
         />
-        <button className="bg-yellow-500 h-10 w-10 flex justify-center items-center rounded-xl ml-2">
-          <FaSearch className="text-gray-800 hover:cursor-pointer" />
+        <button className="px-4 py-2 bg-yellow-400 rounded-r-md hover:bg-yellow-500">
+          <FaSearch />
         </button>
       </div>
 
- 
+      {/* Spacer for mobile */}
+      <div className="flex-1 sm:hidden"></div>
+
+      {/* Right Section */}
       <div className="flex items-center gap-4 sm:gap-6">
-    
+        {/* Theme toggle */}
         <div className="cursor-pointer" onClick={handleToggle}>
           {isDark ? (
             <IoMoonOutline className="text-2xl hover:text-gray-300" />
@@ -47,9 +52,12 @@ export default function Navbar() {
           )}
         </div>
 
-   
-        <div className="hidden sm:flex items-center gap-2 hover:cursor-pointer" onClick={handleAccount}>
-          <FaUser className="text-3xl hover:text-yellow-100 cursor-pointer" />
+        {/* Desktop account */}
+        <div
+          className="hidden sm:flex items-center gap-2 cursor-pointer"
+          onClick={handleAccount}
+        >
+          <FaUser className="text-3xl hover:text-yellow-100" />
           <div className="flex flex-col leading-tight">
             <h3 className="text-sm">Account</h3>
             <h3 className="text-sm flex items-center">
@@ -58,8 +66,51 @@ export default function Navbar() {
           </div>
         </div>
 
-        <IoCartOutline className="text-3xl cursor-pointer" />
+        {/* Cart */}
+
+
+        {/* Mobile Hamburger */}
+        <div
+          className="sm:hidden ml-2 cursor-pointer"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          <FaBars className="text-2xl" />
+        </div>
       </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="sm:hidden absolute top-20 left-0 w-full bg-blue-800 text-white flex flex-col p-4 gap-4 shadow-md z-40">
+          {/* Mobile Search */}
+          <div className="flex">
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="flex-1 px-4 py-2 rounded-l-md bg-white text-black focus:outline-none"
+            />
+            <button className="px-4 py-2 bg-yellow-400 rounded-r-md hover:bg-yellow-500">
+              <FaSearch />
+            </button>
+          </div>
+
+          {/* Account */}
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={handleAccount}
+          >
+            <FaUser className="text-2xl" />
+            <span>Login / Register</span>
+          </div>
+
+          {/* Cart */}
+          <div className="flex items-center gap-2 cursor-pointer">
+            <IoCartOutline className="text-2xl" />
+            <span>Cart</span>
+          </div>
+
+         
+        </div>
+      )}
     </div>
   );
 }
