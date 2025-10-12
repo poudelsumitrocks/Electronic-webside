@@ -17,21 +17,35 @@ export default function Navbar() {
   };
 
   return (
-    <div className="fixed w-full top-0 left-0 bg-blue-700 h-20 text-white flex items-center px-4 sm:px-6 md:px-8 z-50 shadow-md">
+    <div
+      className={`fixed w-full top-0 left-0 h-20 flex items-center px-4 sm:px-6 md:px-8 z-50 shadow-md transition-colors duration-300 ${
+        isDark ? "bg-gray-900 text-white" : "bg-blue-700 text-white"
+      }`}
+    >
       {/* Logo */}
       <div className="flex-shrink-0">
         <h1 className="text-white font-bold text-xl sm:text-2xl md:text-3xl">
-          <span className="hidden sm:inline">Poudel Electrical House</span>
-          <span className="sm:hidden">Poudel Electical House</span>
+          <span
+            className="hidden sm:inline hover:cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            Poudel Electrical House
+          </span>
+          <span
+            className="sm:hidden hover:cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            Poudel Electical House
+          </span>
         </h1>
       </div>
 
-      {/* Desktop Search */}
-      <div className="hidden sm:flex flex-1 mx-4">
+      {/* Desktop & Tablet Search */}
+      <div className="hidden sm:flex flex-1 mx-2 md:mx-4">
         <input
           type="text"
           placeholder="Search products..."
-          className="w-full px-4 py-2 rounded-l-md border-t border-b border-l border-gray-300 text-black focus:outline-none"
+          className="w-full px-4 py-2 rounded-l-md border-t border-b border-l border-gray-300 text-black bg-white focus:outline-none"
         />
         <button className="px-4 py-2 bg-yellow-400 rounded-r-md hover:bg-yellow-500">
           <FaSearch />
@@ -52,6 +66,9 @@ export default function Navbar() {
           )}
         </div>
 
+        {/* Cart */}
+        <IoCartOutline className="text-3xl cursor-pointer" />
+
         {/* Desktop account */}
         <div
           className="hidden sm:flex items-center gap-2 cursor-pointer"
@@ -66,9 +83,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Cart */}
-
-
         {/* Mobile Hamburger */}
         <div
           className="sm:hidden ml-2 cursor-pointer"
@@ -80,13 +94,17 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="sm:hidden absolute top-20 left-0 w-full bg-blue-800 text-white flex flex-col p-4 gap-4 shadow-md z-40">
+        <div
+          className={`sm:hidden absolute top-20 left-0 w-full flex flex-col p-4 gap-4 shadow-md z-40 transition-colors duration-300 ${
+            isDark ? "bg-gray-800 text-white" : "bg-blue-800 text-white"
+          }`}
+        >
           {/* Mobile Search */}
           <div className="flex">
             <input
               type="text"
               placeholder="Search products..."
-              className="flex-1 px-4 py-2 rounded-l-md bg-white text-black focus:outline-none"
+              className="flex-1 px-4 py-2 rounded-l-md text-black bg-white focus:outline-none"
             />
             <button className="px-4 py-2 bg-yellow-400 rounded-r-md hover:bg-yellow-500">
               <FaSearch />
@@ -107,8 +125,6 @@ export default function Navbar() {
             <IoCartOutline className="text-2xl" />
             <span>Cart</span>
           </div>
-
-         
         </div>
       )}
     </div>

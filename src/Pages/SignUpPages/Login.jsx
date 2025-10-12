@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Footer from "../../Component/Footer/Footer";
+import { toast } from "react-toastify";
+import { ThemeContext } from "../../Component/useContext/Toggle";
 
 export default function Login() {
+  const { isDark } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -17,20 +21,49 @@ export default function Login() {
   const handleSignup = () => {
     navigate("signup");
   };
-  const handleLogin = () => {
-    navigate("/landing");
+
+  const handleLogin = (data) => {
+    const userCredentials = localStorage.getItem("data");
+    const parsedUserCredentials = JSON.parse(userCredentials);
+
+    const { fullName, email, password } = parsedUserCredentials;
+
+    const myCredentials = {
+      email: data.email,
+      password: data.password,
+    };
+
+    localStorage.setItem("lastSavedCredentials", JSON.stringify(myCredentials));
+    sessionStorage.setItem("currentUser", fullName);
+
+    function verifyUser() {
+      if (data.email === email && data.password === password) {
+        toast.success("Successfully Logged In!");
+        navigate("/", { state: fullName, replace: true });
+      } else {
+        toast.error("Invalid Credentials");
+      }
+    }
+
+    verifyUser();
   };
 
   return (
-    <div className="bg-amber-50 min-h-screen flex flex-col items-center px-4">
-      <h1 className="text-2xl sm:text-3xl p-4 text-center">
-        Welcome Poudel House
-      </h1>
-
-      <div className="flex justify-center items-center flex-1 w-full">
+    <div
+      className={`min-h-screen flex flex-col items-center px-4 transition-colors duration-300 ${
+        isDark
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white"
+          : "bg-white text-gray-900"
+      }`}
+    >
+      <div className="flex justify-center items-center flex-1 w-full mt-6">
         <form
-          className="bg-white flex flex-col gap-5 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-6 sm:p-8 rounded-xl shadow-md"
-          onSubmit={handleSubmit()}
+          onSubmit={handleSubmit(handleLogin)}
+          className={`flex flex-col gap-5 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-6 sm:p-8 rounded-xl shadow-lg transition-colors duration-300 ${
+             isDark
+              ? "bg-gradient-to-br from-gray-800 via-gray-700 to-gray-600 text-white"
+              : "bg-gradient-to-br from-white to-amber-50 text-gray-900"
+          }`}
         >
           <div className="flex justify-center items-center gap-10 text-center">
             <h1
@@ -39,19 +72,17 @@ export default function Login() {
             >
               Login
             </h1>
-            <h1
-              className="text-xl sm:text-2xl font-bold hover:underline cursor-pointer"
-              onClick={handleSignup}
-            >
-              Signup
-            </h1>
           </div>
 
           <input
             type="email"
             placeholder="Enter username or email"
-            className="border p-2 rounded-xl w-full bg-gray-100 text-gray-500"
             {...register("email", { required: true })}
+            className={`border p-2 rounded-xl w-full transition-colors ${
+              isDark
+                ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                : "bg-gray-100 border-gray-300 text-gray-900 placeholder-gray-500"
+            }`}
           />
 
           <div className="relative w-full">
@@ -59,7 +90,11 @@ export default function Login() {
               type={showPassword ? "text" : "password"}
               placeholder="Enter your Password"
               {...register("password", { required: true })}
-              className="border p-2 rounded-xl w-full bg-gray-100"
+              className={`border p-2 rounded-xl w-full transition-colors ${
+                isDark
+                  ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  : "bg-gray-100 border-gray-300 text-gray-900 placeholder-gray-500"
+              }`}
             />
             <button
               type="button"
@@ -77,17 +112,34 @@ export default function Login() {
 
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 p-2 text-white font-semibold rounded-md cursor-pointer" onClick={()=>navigate("/")}
+            className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 p-2 text-white font-semibold rounded-md cursor-pointer transition-all"
           >
             Login
           </button>
 
-          <h3 className="text-red-400 text-center text-sm sm:text-base">
+          <h3
+            className="text-red-400 text-center text-sm sm:text-base cursor-pointer hover:underline"
+            onClick={() => navigate("forgotpass")}
+          >
             Forgot password?
           </h3>
+
+          <p
+            className={`mt-4 text-sm flex gap-2 justify-center font-semibold transition-colors ${
+              isDark ? "text-gray-300" : "text-gray-600"
+            }`}
+          >
+            Don't have an account?
+            <span
+              className="text-blue-500 cursor-pointer hover:underline"
+              onClick={handleSignup}
+            >
+              Sign Up
+            </span>
+          </p>
         </form>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

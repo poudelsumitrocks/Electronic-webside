@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaFacebook, FaInstagram, FaPhone, FaEnvelope } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { useNavigate } from "react-router";
+import { ThemeContext } from "../useContext/Toggle";
 
 export default function Footer() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const { isDark } = useContext(ThemeContext);
+
   return (
-    <footer className="bg-blue-700 text-white mt-10">
+    <footer
+      className={`mt-10 transition-colors duration-300 ${
+        isDark ? "bg-gray-900 text-gray-200" : "bg-blue-700 text-white"
+      }`}
+    >
       {/* Top Section */}
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
         {/* About Section */}
         <div>
           <h2 className="text-xl font-semibold mb-3">Poudel Electric House</h2>
-          <p className="text-sm text-gray-200">
+          <p className="text-sm">
             Your trusted shop for all electrical, plumbing, and lighting needs.
             Quality products with reliable service at affordable prices.
           </p>
@@ -21,18 +28,38 @@ export default function Footer() {
         {/* Quick Links */}
         <div>
           <h2 className="text-xl font-semibold mb-3">Quick Links</h2>
-          <ul className="space-y-2 text-gray-200">
-            <li className="hover:text-yellow-400 cursor-pointer" onClick={()=>{navigate("/")}} >Home</li>
-            <li className="hover:text-yellow-400 cursor-pointer" onClick={()=>{navigate("")}}>Shop</li>
-            <li className="hover:text-yellow-400 cursor-pointer" onClick={()=>{navigate("/about")}}>About Us</li>
-            <li className="hover:text-yellow-400 cursor-pointer" onClick={()=>{navigate("/contact")}}>Contact</li>
+          <ul className="space-y-2">
+            <li
+              className="hover:text-yellow-400 cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              Home
+            </li>
+            <li
+              className="hover:text-yellow-400 cursor-pointer"
+              onClick={() => navigate("")}
+            >
+              Shop
+            </li>
+            <li
+              className="hover:text-yellow-400 cursor-pointer"
+              onClick={() => navigate("/about")}
+            >
+              About Us
+            </li>
+            <li
+              className="hover:text-yellow-400 cursor-pointer"
+              onClick={() => navigate("/contact")}
+            >
+              Contact
+            </li>
           </ul>
         </div>
 
         {/* Contact Info */}
         <div>
           <h2 className="text-xl font-semibold mb-3">Contact Us</h2>
-          <ul className="space-y-2 text-gray-200 text-sm">
+          <ul className="space-y-2 text-sm">
             <li className="flex items-center gap-2">
               <IoLocationSharp className="text-yellow-400" />
               <span>SirjanaChowk,Bharatpur, Chitwan</span>
@@ -63,7 +90,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Section */}
-      <div className="border-t border-white/20 py-4 text-center text-sm text-gray-200">
+      <div className="border-t border-white/20 py-4 text-center text-sm">
         © {new Date().getFullYear()} Poudel Electrical House — All Rights Reserved.
       </div>
     </footer>
