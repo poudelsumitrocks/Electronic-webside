@@ -5,11 +5,16 @@ import { IoCartOutline, IoMoonOutline } from "react-icons/io5";
 import { GoSun } from "react-icons/go";
 import { ThemeContext } from "../useContext/Toggle";
 import { useNavigate } from "react-router";
+import { useSelector,useDispatch } from "react-redux";
+import { Logout } from "../../Redux/Slice/Userslice";
 
 export default function Navbar() {
   const { isDark, handleToggle } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const userIdentifier = useSelector((state)=>state.user.userIdentifier)
+  const dispatch=useDispatch();
+  const displayName=userIdentifier?userIdentifier.split("@")[0]:null;
 
   const handleAccount = () => {
     navigate("/landing");
@@ -78,7 +83,10 @@ export default function Navbar() {
           <div className="flex flex-col leading-tight">
             <h3 className="text-sm">Account</h3>
             <h3 className="text-sm flex items-center">
-              Login/Register <LuChevronDown className="ml-1" />
+
+              {/* Login/Register  */}
+              {displayName?`Hi,${displayName}`:"Login"}
+              <LuChevronDown className="ml-1" />
             </h3>
           </div>
         </div>
@@ -91,6 +99,14 @@ export default function Navbar() {
           <FaBars className="text-2xl" />
         </div>
       </div>
+      {
+        userIdentifier && (
+          <button onClick={()=>dispatch(Logout())}
+          className="ml-5 bg-red-400 px-3 py-1 rounded text-white">
+            LogOut
+          </button>
+        )
+      }
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (

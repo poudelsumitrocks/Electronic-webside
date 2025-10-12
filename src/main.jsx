@@ -4,17 +4,17 @@ import "./index.css";
 import App from "./App.jsx";
 import Toggle from "./Component/useContext/Toggle.jsx";
 
-// import { Provider } from "react-redux";
+import { Provider } from "react-redux";
 // import { createSlice } from "@reduxjs/toolkit";
-// import { store } from "./Redux/Store.js";
+import { store } from "./Redux/store.js";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
   <Toggle>
-     <App />
-  </Toggle>
-    {/* <Provider store={store}>
+    
+    <Provider store={store}>
       <App />
-    </Provider> */}
+    </Provider>
+  </Toggle>
   </StrictMode>
 );

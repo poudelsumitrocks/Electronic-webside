@@ -5,6 +5,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Footer from "../../Component/Footer/Footer";
 import { toast } from "react-toastify";
 import { ThemeContext } from "../../Component/useContext/Toggle";
+// redux
+import { useDispatch } from "react-redux";
+import { login } from "../../Redux/Slice/Userslice";
 
 export default function Login() {
   const { isDark } = useContext(ThemeContext);
@@ -21,32 +24,37 @@ export default function Login() {
   const handleSignup = () => {
     navigate("signup");
   };
+  const dispatch = useDispatch();
 
-  const handleLogin = (data) => {
-    const userCredentials = localStorage.getItem("data");
-    const parsedUserCredentials = JSON.parse(userCredentials);
+const handleLogin = (data) => {
+  const userCredentials = localStorage.getItem("data");
+  if (!userCredentials) {
+    toast.error("No user found. Please sign up first.");
+    return;
+  }
 
-    const { fullName, email, password } = parsedUserCredentials;
+  const parsedUserCredentials = JSON.parse(userCredentials);
+  const { fullName, email, password } = parsedUserCredentials;
 
-    const myCredentials = {
-      email: data.email,
-      password: data.password,
-    };
+  if (data.email === email && data.password === password) {
+    toast.success("Successfully Logged In!");
 
-    localStorage.setItem("lastSavedCredentials", JSON.stringify(myCredentials));
+    // Save last credentials and session
+    localStorage.setItem(
+      "lastSavedCredentials",
+      JSON.stringify({ email: data.email, password: data.password })
+    );
     sessionStorage.setItem("currentUser", fullName);
 
-    function verifyUser() {
-      if (data.email === email && data.password === password) {
-        toast.success("Successfully Logged In!");
-        navigate("/", { state: fullName, replace: true });
-      } else {
-        toast.error("Invalid Credentials");
-      }
-    }
+    // Dispatch Redux login
+    dispatch(login(email));
 
-    verifyUser();
-  };
+    navigate("/", { state: fullName, replace: true });
+  } else {
+    toast.error("Invalid Credentials");
+  }
+};
+
 
   return (
     <div
@@ -60,7 +68,7 @@ export default function Login() {
         <form
           onSubmit={handleSubmit(handleLogin)}
           className={`flex flex-col gap-5 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg p-6 sm:p-8 rounded-xl shadow-lg transition-colors duration-300 ${
-             isDark
+            isDark
               ? "bg-gradient-to-br from-gray-800 via-gray-700 to-gray-600 text-white"
               : "bg-gradient-to-br from-white to-amber-50 text-gray-900"
           }`}
