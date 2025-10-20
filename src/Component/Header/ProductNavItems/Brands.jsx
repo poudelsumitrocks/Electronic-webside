@@ -12,7 +12,7 @@ export default function Brands() {
         onMouseLeave={() => setOpen(false)}
       >
         {/* Button */}
-        <button className="flex items-center gap-1 font-medium hover:text-blue-600">
+        <button className="flex items-center gap-1 text-gray-600 font-medium hover:text-blue-600">
           Brands
           <span>{isOpen ? <LuChevronUp /> : <LuChevronDown />}</span>
         </button>

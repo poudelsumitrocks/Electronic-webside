@@ -13,7 +13,7 @@ export default function Holder() {
         onMouseLeave={() => setOpen(false)}
       >
         {/* Button */}
-        <button className="flex items-center gap-1 font-medium hover:text-blue-600">
+        <button className="flex items-center text-gray-600 gap-1 font-medium hover:text-blue-600">
          Holder
           <span>{isOpen ? <LuChevronUp /> : <LuChevronDown />}</span>
         </button>

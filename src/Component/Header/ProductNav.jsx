@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Bulb from "./ProductNavItems/Bulb";
+import Bulb from "./ProductNavItems/Bulb/Bulb";
 import Switches from "./ProductNavItems/Switches"
 import Fan from "./ProductNavItems/Fan";
 import Wires from "./ProductNavItems/Wires";

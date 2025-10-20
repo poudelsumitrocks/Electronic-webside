@@ -6,6 +6,8 @@ import Footer from "../../Component/Footer/Footer";
 import FeaturedProducts from "./FeaturedProducts";
 import { ThemeContext } from "../../Component/useContext/Toggle";
 
+import BulbDetails from "../ProductsPage/BulbDetails";
+
 export default function Home() {
   const { isDark } = useContext(ThemeContext);
 
@@ -27,7 +29,7 @@ export default function Home() {
 
         {/* Featured Products */}
         <FeaturedProducts />
-
+        <BulbDetails/>
         {/* Footer */}
         <Footer />
       </div>

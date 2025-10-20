@@ -5,16 +5,18 @@ import { IoCartOutline, IoMoonOutline } from "react-icons/io5";
 import { GoSun } from "react-icons/go";
 import { ThemeContext } from "../useContext/Toggle";
 import { useNavigate } from "react-router";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Logout } from "../../Redux/Slice/Userslice";
+import Search from "../../Pages/SearchPage/Search";
 
 export default function Navbar() {
   const { isDark, handleToggle } = useContext(ThemeContext);
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const userIdentifier = useSelector((state)=>state.user.userIdentifier)
-  const dispatch=useDispatch();
-  const displayName=userIdentifier?userIdentifier.split("@")[0]:null;
+  const userIdentifier = useSelector((state) => state.user.userIdentifier);
+  const cartItems = useSelector((state) => state.cart.cartItems); // Redux cart
+  const dispatch = useDispatch();
+  const displayName = userIdentifier ? userIdentifier.split("@")[0] : null;
 
   const handleAccount = () => {
     navigate("/landing");
@@ -45,19 +47,10 @@ export default function Navbar() {
         </h1>
       </div>
 
-      {/* Desktop & Tablet Search */}
       <div className="hidden sm:flex flex-1 mx-2 md:mx-4">
-        <input
-          type="text"
-          placeholder="Search products..."
-          className="w-full px-4 py-2 rounded-l-md border-t border-b border-l border-gray-300 text-black bg-white focus:outline-none"
-        />
-        <button className="px-4 py-2 bg-yellow-400 rounded-r-md hover:bg-yellow-500">
-          <FaSearch />
-        </button>
+        <Search />
       </div>
 
-      {/* Spacer for mobile */}
       <div className="flex-1 sm:hidden"></div>
 
       {/* Right Section */}
@@ -72,7 +65,14 @@ export default function Navbar() {
         </div>
 
         {/* Cart */}
-        <IoCartOutline className="text-3xl cursor-pointer" />
+        <div className="relative cursor-pointer" onClick={() => navigate("/cart")}>
+          <IoCartOutline className="text-3xl" />
+          {cartItems.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+              {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+            </span>
+          )}
+        </div>
 
         {/* Desktop account */}
         <div
@@ -83,9 +83,7 @@ export default function Navbar() {
           <div className="flex flex-col leading-tight">
             <h3 className="text-sm">Account</h3>
             <h3 className="text-sm flex items-center">
-
-              {/* Login/Register  */}
-              {displayName?`Hi,${displayName}`:"Login"}
+              {displayName ? `Hi,${displayName}` : "Login"}
               <LuChevronDown className="ml-1" />
             </h3>
           </div>
@@ -99,14 +97,15 @@ export default function Navbar() {
           <FaBars className="text-2xl" />
         </div>
       </div>
-      {
-        userIdentifier && (
-          <button onClick={()=>dispatch(Logout())}
-          className="ml-5 bg-red-400 px-3 py-1 rounded text-white">
-            LogOut
-          </button>
-        )
-      }
+
+      {userIdentifier && (
+        <button
+          onClick={() => dispatch(Logout())}
+          className="ml-5 bg-red-400 px-3 py-1 rounded text-white"
+        >
+          LogOut
+        </button>
+      )}
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
@@ -115,19 +114,8 @@ export default function Navbar() {
             isDark ? "bg-gray-800 text-white" : "bg-blue-800 text-white"
           }`}
         >
-          {/* Mobile Search */}
-          <div className="flex">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="flex-1 px-4 py-2 rounded-l-md text-black bg-white focus:outline-none"
-            />
-            <button className="px-4 py-2 bg-yellow-400 rounded-r-md hover:bg-yellow-500">
-              <FaSearch />
-            </button>
-          </div>
+          <Search />
 
-          {/* Account */}
           <div
             className="flex items-center gap-2 cursor-pointer"
             onClick={handleAccount}
@@ -136,10 +124,17 @@ export default function Navbar() {
             <span>Login / Register</span>
           </div>
 
-          {/* Cart */}
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => navigate("/cart")}
+          >
             <IoCartOutline className="text-2xl" />
             <span>Cart</span>
+            {cartItems.length > 0 && (
+              <span className="ml-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+              </span>
+            )}
           </div>
         </div>
       )}

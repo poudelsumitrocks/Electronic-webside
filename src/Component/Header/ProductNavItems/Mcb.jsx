@@ -13,8 +13,8 @@ export default function Mcb() {
         onMouseLeave={() => setOpen(false)}
       >
         {/* Button */}
-        <button className="flex items-center gap-1 font-medium hover:text-blue-600">
-         Mcb
+        <button className="flex items-center text-gray-600 gap-1 font-medium hover:text-blue-600">
+         MCB
           <span>{isOpen ? <LuChevronUp /> : <LuChevronDown />}</span>
         </button>
 

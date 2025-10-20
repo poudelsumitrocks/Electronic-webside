@@ -12,7 +12,7 @@ export default function Wires() {
         onMouseLeave={() => setOpen(false)}
       >
         {/* Button */}
-        <button className="flex items-center gap-1 font-medium hover:text-blue-600">
+        <button className="flex items-center gap-1 font-medium text-gray-600 hover:text-blue-600">
         Wires
           <span>{isOpen ? <LuChevronUp /> : <LuChevronDown />}</span>
         </button>
